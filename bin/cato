@@ -26,17 +26,27 @@ set -e
 
 . /usr/local/opt/chswift/share/chswift/chswift.sh
 
-# TODO: Check that $1 is a valid Swift version
-chswift "$1"
+SCRIPT="$2"
+if [ ! -f "$1" ] && [ -n "$1" ]
+then
+	chswift "$1"
+else
+	chswift system
+	SCRIPT="$1"
+fi
 
-# TODO: Check that $2 is a valid Swift file
+if [ ! -f "$SCRIPT" ] || [[ "$SCRIPT" != *swift ]]
+then
+	echo "Usage: $0 [SWIFT-VERSION] SCRIPT"
+	exit 1
+fi
 
-PKG_DIR="$HOME/.📦/`basename $2 .swift`"
+PKG_DIR="$HOME/.📦/`basename $SCRIPT .swift`"
 mkdir -p "$PKG_DIR"
 
 if [ ! -d "$PKG_DIR/Rome" ]
 then
-	install_dependencies "$2"
+	install_dependencies "$SCRIPT"
 fi
 
-exec xcrun swift -F"$PKG_DIR/Rome" "$2"
+exec xcrun swift -F"$PKG_DIR/Rome" "$SCRIPT"
