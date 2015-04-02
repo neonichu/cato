@@ -2,6 +2,8 @@
 
 [![Build Status](http://img.shields.io/travis/neonichu/cato.svg?style=flat)](https://travis-ci.org/neonichu/cato)
 
+![](http://i.giphy.com/lB6TLJtWKiJDa.gif)
+
 Cato makes it easy to run Swift scripts, by utilizing [chswift][1] to choose
 the right Swift version and [Rome][2] to install missing dependencies.
 
