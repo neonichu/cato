@@ -1,6 +1,6 @@
 language: objective-c
 cache: bundler
-install:
+before_install:
 - brew tap neonichu/formulae
 - brew install chswift
 script: ./test.sh
