@@ -1,0 +1,4 @@
+language: objective-c
+cache: bundler
+install: brew install chswift
+script: ./test.sh
