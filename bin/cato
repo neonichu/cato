@@ -14,12 +14,19 @@ function install_dependencies() {
 	cat <<EOF >$PKG_DIR/Podfile
 platform :osx, '10.10'
 plugin 'cocoapods-rome'
+use_frameworks!
 EOF
 
 	grep '^import' $1|cut -d" " -f2|grep -v "`echo $FRAMEWORKS|sed 's/ /\\\|/g'`"| \
 		sed 's/\(.*\)/pod "\1"/' >>$PKG_DIR/Podfile
 
-	pod install --project-directory="$PKG_DIR" #--verbose
+	POD_CMD="pod install --project-directory=$PKG_DIR --no-repo-update --no-integrate"
+	if [ -f Gemfile ]
+	then
+		bundle exec $POD_CMD
+	else
+		exec $POD_CMD
+	fi
 }
 
 set -e
