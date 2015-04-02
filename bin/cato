@@ -1,0 +1,42 @@
+#!/bin/sh #-x
+
+function install_dependencies() {
+	if [ -z "$1" ]
+	then
+		return
+	fi
+
+	PLATFORM="`xcrun --sdk macosx --show-sdk-platform-path`"
+	SDK="`ls -d "$PLATFORM"/Developer/SDKs/*|head -n 1`"
+	#  ¯\_(ツ)_/¯  http://unix.stackexchange.com/questions/65212/why-doesnt-this-xargs-command-work
+	FRAMEWORKS="`ls -d "$SDK"//System/Library/Frameworks/*.framework|xargs -L1 sh -c 'basename $1 .framework' dummy`"
+
+	cat <<EOF >$PKG_DIR/Podfile
+platform :osx, '10.10'
+plugin 'cocoapods-rome'
+EOF
+
+	grep '^import' $1|cut -d" " -f2|grep -v "`echo $FRAMEWORKS|sed 's/ /\\\|/g'`"| \
+		sed 's/\(.*\)/pod "\1"/' >>$PKG_DIR/Podfile
+
+	pod install --project-directory="$PKG_DIR" #--verbose
+}
+
+set -e
+
+. /usr/local/opt/chswift/share/chswift/chswift.sh
+
+# TODO: Check that $1 is a valid Swift version
+chswift "$1"
+
+# TODO: Check that $2 is a valid Swift file
+
+PKG_DIR="$HOME/.📦/`basename $2 .swift`"
+mkdir -p "$PKG_DIR"
+
+if [ ! -d "$PKG_DIR/Rome" ]
+then
+	install_dependencies "$2"
+fi
+
+exec xcrun swift -F"$PKG_DIR/Rome" "$2"
