@@ -1,5 +1,7 @@
 # cato
 
+[![Build Status](http://img.shields.io/travis/neonichu/cato.svg?style=flat)](https://travis-ci.org/neonichu/cato)
+
 ⚠️WIP
 
 cato makes it easy to run Swift scripts, by utilizing
