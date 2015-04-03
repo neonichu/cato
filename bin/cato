@@ -42,7 +42,7 @@ else
 	SCRIPT="$1"
 fi
 
-if [ ! -f "$SCRIPT" ] || [[ "$SCRIPT" != *swift ]]
+if [ ! -f "$SCRIPT" ]
 then
 	echo "Usage: $0 [SWIFT-VERSION] SCRIPT"
 	exit 1
