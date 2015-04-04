@@ -1,0 +1,13 @@
+#!/usr/bin/env cato 1.2
+
+import XCTest
+import xctester
+
+class YOLO : XCTestCase {
+  func testAdd() {
+    let result = 3 + 5
+    XCTAssertEqual(8, result, "yolo")
+  }
+}
+
+XCTestRunAll()

@@ -8,8 +8,13 @@ function install_dependencies() {
 
 	PLATFORM="`xcrun --sdk macosx --show-sdk-platform-path`"
 	SDK="`ls -d "$PLATFORM"/Developer/SDKs/*|head -n 1`"
-	#  ¯\_(ツ)_/¯  http://unix.stackexchange.com/questions/65212/why-doesnt-this-xargs-command-work
-	FRAMEWORKS="`ls -d "$SDK"//System/Library/Frameworks/*.framework|xargs -L1 sh -c 'basename $1 .framework' dummy`"
+
+	FRAMEWORKS=""
+	for frameworks_dir in "$SDK"//System/Library/Frameworks $FRAMEWORKS_PATH
+	do
+		#  ¯\_(ツ)_/¯  http://unix.stackexchange.com/questions/65212/why-doesnt-this-xargs-command-work
+		FRAMEWORKS="$FRAMEWORKS `ls -d $frameworks_dir/*.framework|xargs -L1 sh -c 'basename $1 .framework' dummy`"
+	done
 
 	cat <<EOF >$PKG_DIR/Podfile
 platform :osx, '10.10'
@@ -48,6 +53,9 @@ then
 	exit 1
 fi
 
+SDK_PATH="`xcrun --show-sdk-path`"
+FRAMEWORKS_PATH="$SDK_PATH/../../Library/Frameworks"
+
 PKG_DIR="$HOME/.📦/`basename $SCRIPT .swift`"
 mkdir -p "$PKG_DIR"
 
@@ -56,4 +64,4 @@ then
 	install_dependencies "$SCRIPT"
 fi
 
-exec xcrun swift -F"$PKG_DIR/Rome" "$SCRIPT"
+exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" "$SCRIPT"
