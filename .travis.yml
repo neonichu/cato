@@ -3,5 +3,5 @@ cache: bundler
 before_install:
 - brew tap neonichu/formulae
 - brew install chswift
-before_script: pod repo update
+before_script: pod repo update >/dev/null
 script: ./test.sh
