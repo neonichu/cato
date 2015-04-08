@@ -42,10 +42,12 @@ SCRIPT="$2"
 if [ ! -f "$1" ] && [ -n "$1" ]
 then
 	chswift "$1"
+	shift
 else
 	chswift system
 	SCRIPT="$1"
 fi
+shift
 
 if [ ! -f "$SCRIPT" ]
 then
@@ -64,4 +66,4 @@ then
 	install_dependencies "$SCRIPT"
 fi
 
-exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" "$SCRIPT"
+exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" "$SCRIPT" $@
