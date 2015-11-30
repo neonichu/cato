@@ -1,4 +1,4 @@
-#!/usr/bin/env cato 1.2
+#!/usr/bin/env cato 2.1
 
 import XCTest
 import xctester
@@ -7,7 +7,7 @@ class Arguments: XCTestCase {
   func testArgumentsArePassedOn() {
     let ARGV = Process.arguments
 
-    XCTAssertEqual(2, count(ARGV), "")
+    XCTAssertEqual(2, ARGV.count, "")
     XCTAssertEqual("./test/3", ARGV[0], "")
     XCTAssertEqual("yolo", ARGV.last ?? "", "")
   }
