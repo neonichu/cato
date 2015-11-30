@@ -27,7 +27,7 @@ Cato is supposed to be run via a script's [hash-bang][4] directive:
 import Chores
 
 let result = >["xcodebuild", "-version"]
-println(result.stdout)
+print(result.stdout)
 ```
 
 Any frameworks that do not ship with the system will be installed into their own
