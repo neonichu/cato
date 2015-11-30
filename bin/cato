@@ -66,4 +66,6 @@ then
 	install_dependencies "$SCRIPT"
 fi
 
-exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" "$SCRIPT" $@
+FRAMEWORKS="`ls "$PKG_DIR/Rome"|sed -e 's/\.framework$//' -e 's/^/-framework /'`"
+
+exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" `echo $FRAMEWORKS` "$SCRIPT" $@
