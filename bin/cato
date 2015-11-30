@@ -23,7 +23,7 @@ use_frameworks!
 EOF
 
 	grep '^import' $1|cut -d" " -f2|grep -v "`echo $FRAMEWORKS|sed 's/ /\\\|/g'`"| \
-		sed 's/\(.*\)/pod "\1"/' >>$PKG_DIR/Podfile
+		grep -v 'ObjectiveC.runtime'|sed 's/\(.*\)/pod "\1"/' >>$PKG_DIR/Podfile
 
 	POD_CMD="pod install --project-directory=$PKG_DIR --no-repo-update --no-integrate"
 	if [ -f Gemfile ]

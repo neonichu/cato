@@ -9,8 +9,6 @@ extension NSBundle {
   }
 }
 
-let xcodes = split((>["mdfind", "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"]).stdout) {
-  $0 == "\n"
-}
-println(xcodes.filter { !NSBundle(path: $0)!.fromAppStore()! })
-
+let paths = (>["mdfind", "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"]).stdout.characters
+let xcodes = paths.split { $0 == "\n" }.map(String.init)
+print(xcodes.filter { !NSBundle(path: $0)!.fromAppStore()! })
