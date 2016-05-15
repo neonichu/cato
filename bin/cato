@@ -20,12 +20,16 @@ function install_dependencies() {
 platform :osx, '10.10'
 plugin 'cocoapods-rome'
 use_frameworks!
+
+target 'cato' do
 EOF
 
 	grep '^import' $1|cut -d" " -f2|grep -v "`echo $FRAMEWORKS|sed 's/ /\\\|/g'`"| \
 		grep -v 'ObjectiveC.runtime'|sed 's/\(.*\)/pod "\1"/' >>$PKG_DIR/Podfile
 
-	POD_CMD="pod install --project-directory=$PKG_DIR --no-repo-update --no-integrate"
+	echo 'end' >>$PKG_DIR/Podfile
+
+	POD_CMD="pod install --project-directory=$PKG_DIR --no-repo-update"
 	if [ -f Gemfile ]
 	then
 		bundle exec $POD_CMD
@@ -66,6 +70,6 @@ then
 	install_dependencies "$SCRIPT"
 fi
 
-FRAMEWORKS="`ls "$PKG_DIR/Rome"|sed -e 's/\.framework$//' -e 's/^/-framework /'`"
+FRAMEWORKS="`ls "$PKG_DIR/Rome"|grep -v 'Pods_cato'|sed -e 's/\.framework$//' -e 's/^/-framework /'`"
 
 exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" `echo $FRAMEWORKS` "$SCRIPT" $@
