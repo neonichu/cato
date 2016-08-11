@@ -46,6 +46,17 @@ SCRIPT="$2"
 if [ ! -f "$1" ] && [ -n "$1" ]
 then
 	chswift "$1"
+
+	for toolchain in `ls -d "$(xcode-select -p)/Toolchains"/* 2>/dev/null`
+	do
+		echo $toolchain|grep -q "$1.xctoolchain"
+		if [ $? -eq 0 ]
+		then
+			TOOLCHAIN="--toolchain `/usr/libexec/PlistBuddy -c 'Print Identifier' $toolchain/ToolchainInfo.plist`"
+			break
+		fi
+	done
+
 	shift
 else
 	chswift system
@@ -60,6 +71,7 @@ then
 fi
 
 SDK_PATH="`xcrun --show-sdk-path`"
+OS_VERSION="`xcrun --show-sdk-version`"
 FRAMEWORKS_PATH="$SDK_PATH/../../Library/Frameworks"
 
 PKG_DIR="$HOME/.📦/`basename $SCRIPT .swift`"
@@ -72,4 +84,5 @@ fi
 
 FRAMEWORKS="`ls "$PKG_DIR/Rome"|grep -v 'Pods_cato'|sed -e 's/\.framework$//' -e 's/^/-framework /'`"
 
-exec xcrun swift -F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" `echo $FRAMEWORKS` "$SCRIPT" $@
+exec xcrun $TOOLCHAIN swift -target x86_64-apple-macosx$OS_VERSION \
+	-F"$PKG_DIR/Rome" -F"$FRAMEWORKS_PATH" `echo $FRAMEWORKS` "$SCRIPT" $@

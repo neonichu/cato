@@ -1,0 +1,5 @@
+#!/usr/bin/env cato 2.3
+
+import AEXML
+
+print("Hello, world!")

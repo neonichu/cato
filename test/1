@@ -1,4 +1,4 @@
-#!/usr/bin/env cato
+#!/usr/bin/env cato 2.3
 
 import Chores
 import Foundation

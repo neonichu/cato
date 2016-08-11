@@ -1,4 +1,4 @@
-#!/usr/bin/env cato 2.2
+#!/usr/bin/env cato 2.3
 
 import XCTest
 import xctester
