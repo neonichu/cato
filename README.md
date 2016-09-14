@@ -1,6 +1,7 @@
 # cato
 
 [![Build Status](http://img.shields.io/travis/neonichu/cato.svg?style=flat)](https://travis-ci.org/neonichu/cato)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 ![](http://i.giphy.com/lB6TLJtWKiJDa.gif)
 
